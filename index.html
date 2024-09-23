@@ -8,21 +8,27 @@
         body {
             background-image: url('https://mfiles.alphacoders.com/966/966512.jpg');
             background-size: cover;
+            background-position: center;
             color: white;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-        }
-        .container {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             height: 100vh;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             padding: 20px;
             text-align: center;
         }
         h1 {
-            margin-top: 0;
+            margin: 10px 0;
+            font-size: 24px;
         }
         p {
             font-size: 18px;
@@ -31,7 +37,7 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 20vh; /* Mengangkat tombol ke atas */
+            margin-bottom: 40px; /* Mengurangi margin bawah tombol */
         }
         button {
             background-color: lightblue;
@@ -53,12 +59,6 @@
         }
         .bottom-buttons button {
             width: 150px;
-        }
-
-        @media (max-width: 768px) {
-            .bottom-buttons {
-                margin-bottom: 30vh; /* Mengangkat lebih tinggi untuk layar mobile */
-            }
         }
     </style>
 </head>
