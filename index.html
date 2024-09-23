@@ -31,6 +31,7 @@
             display: flex;
             justify-content: center;
             gap: 10px;
+            margin-bottom: 20vh; /* Mengangkat tombol ke atas */
         }
         button {
             background-color: lightblue;
@@ -52,6 +53,12 @@
         }
         .bottom-buttons button {
             width: 150px;
+        }
+
+        @media (max-width: 768px) {
+            .bottom-buttons {
+                margin-bottom: 30vh; /* Mengangkat lebih tinggi untuk layar mobile */
+            }
         }
     </style>
 </head>
