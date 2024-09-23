@@ -6,86 +6,135 @@
     <title>Fragment Trending App</title>
     <style>
         body {
+            background-image: url('https://mfiles.alphacoders.com/966/966512.jpg');
+            background-size: cover;
+            color: white;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #001f3f; /* Navy blue background */
-            color: white;
+        }
+        .container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-between;
             height: 100vh;
+            padding: 20px;
             text-align: center;
         }
         h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            margin-top: 0;
         }
         p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
+            font-size: 18px;
         }
-        .button-container {
+        .top-buttons {
             display: flex;
-            justify-content: space-around;
-            width: 80%;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .bottom-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
         button {
-            background-color: #7FDBFF; /* Light blue glossy */
-            color: #001f3f;
-            font-size: 1rem;
-            padding: 15px 20px;
+            background-color: lightblue;
+            color: black;
             border: none;
-            border-radius: 5px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
             cursor: pointer;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
         button:hover {
-            background-color: #39CCCC;
+            background-color: #add8e6;
         }
-        .ton-wallet {
-            margin-top: 20px;
-            font-size: 1rem;
+        button:active {
+            box-shadow: 0 0 25px rgba(0, 191, 255, 0.9);
+        }
+        .top-buttons button {
+            padding: 10px 20px;
+            margin: 10px;
+        }
+        .bottom-buttons button {
+            width: 150px;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="top-buttons">
+            <button onclick="connectWallet()">Connect Wallet</button>
+            <button onclick="connectTelegram()">Connect Telegram Account</button>
+        </div>
 
-    <h1>Fragment Trending App</h1>
-    <p>With this Web App, easily explore fragment.com without leaving Telegram.</p>
+        <div>
+            <h1>Fragment Trending App</h1>
+            <p>Dengan web app ini, Anda dapat dengan mudah menjelajahi website fragment.com tanpa harus meninggalkan Telegram.</p>
+        </div>
 
-    <div class="button-container">
-        <button onclick="openFragmentPage('https://fragment.com/?sort=listed&filter=sale')">Listed</button>
-        <button onclick="openFragmentPage('https://fragment.com/?sort=listed&filter=auction')">Auction</button>
-        <button onclick="openFragmentPage('https://fragment.com/?sort=ending&filter=sold')">Sold</button>
-    </div>
-
-    <div class="ton-wallet">
-        <button onclick="connectTONWallet()">Connect TON Wallet</button>
+        <div class="bottom-buttons">
+            <button onclick="openFragment('https://fragment.com/?sort=listed&filter=sale')">Listed</button>
+            <button onclick="openFragment('https://fragment.com/?sort=listed&filter=auction')">Auction</button>
+            <button onclick="openFragment('https://fragment.com/?sort=ending&filter=sold')">Sold</button>
+        </div>
     </div>
 
     <script>
-        function openFragmentPage(url) {
-            Telegram.WebApp.openLink(url);
+        function openFragment(url) {
+            window.open(url, '_blank');
         }
 
-        function connectTONWallet() {
-            if (Telegram.WebApp.isVersionAtLeast("6.7")) {
-                Telegram.WebApp.requestWallet({
-                    provider: 'ton',
-                }).then(wallet => {
-                    alert(`Connected to TON Wallet: ${wallet.address}`);
-                }).catch(err => {
-                    alert('Failed to connect TON Wallet.');
-                    console.error(err);
+        function connectWallet() {
+            if (window.Telegram.WebApp) {
+                Telegram.WebApp.showPopup({
+                    title: "Connect Wallet",
+                    message: "Would you like to connect your Telegram Wallet?",
+                    buttons: [
+                        { text: "Yes", id: "yes", type: 'ok' },
+                        { text: "Cancel", id: "cancel", type: 'close' }
+                    ]
+                });
+
+                Telegram.WebApp.onEvent('popupClosed', function(button_id) {
+                    if (button_id === 'yes') {
+                        tg.invoke('tonConnect', { successCallback: onWalletConnected });
+                    }
                 });
             } else {
-                alert('Please update your Telegram app to use TON wallet integration.');
+                alert("Telegram Wallet not supported in this browser.");
+            }
+        }
+
+        function onWalletConnected(wallet) {
+            alert('Wallet connected: ' + JSON.stringify(wallet));
+        }
+
+        function connectTelegram() {
+            if (window.Telegram.WebApp) {
+                Telegram.WebApp.showPopup({
+                    title: "Connect Account",
+                    message: "Would you like to connect your Telegram Account?",
+                    buttons: [
+                        { text: "Yes", id: "yes", type: 'ok' },
+                        { text: "Cancel", id: "cancel", type: 'close' }
+                    ]
+                });
+
+                Telegram.WebApp.onEvent('popupClosed', function(button_id) {
+                    if (button_id === 'yes') {
+                        alert('Telegram account connected successfully!');
+                        // Add any logic to handle Telegram account connection
+                    }
+                });
+            } else {
+                alert("Telegram WebApp not supported in this browser.");
             }
         }
     </script>
-
 </body>
 </html>
