@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fragment Trending App</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #001f3f; /* Navy blue background */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+        }
+        button {
+            background-color: #7FDBFF; /* Light blue glossy */
+            color: #001f3f;
+            font-size: 1rem;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #39CCCC;
+        }
+        .ton-wallet {
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Fragment Trending App</h1>
+    <p>With this Web App, easily explore fragment.com without leaving Telegram.</p>
+
+    <div class="button-container">
+        <button onclick="openFragmentPage('https://fragment.com/?sort=listed&filter=sale')">Listed</button>
+        <button onclick="openFragmentPage('https://fragment.com/?sort=listed&filter=auction')">Auction</button>
+        <button onclick="openFragmentPage('https://fragment.com/?sort=ending&filter=sold')">Sold</button>
+    </div>
+
+    <div class="ton-wallet">
+        <button onclick="connectTONWallet()">Connect TON Wallet</button>
+    </div>
+
+    <script>
+        function openFragmentPage(url) {
+            Telegram.WebApp.openLink(url);
+        }
+
+        function connectTONWallet() {
+            if (Telegram.WebApp.isVersionAtLeast("6.7")) {
+                Telegram.WebApp.requestWallet({
+                    provider: 'ton',
+                }).then(wallet => {
+                    alert(`Connected to TON Wallet: ${wallet.address}`);
+                }).catch(err => {
+                    alert('Failed to connect TON Wallet.');
+                    console.error(err);
+                });
+            } else {
+                alert('Please update your Telegram app to use TON wallet integration.');
+            }
+        }
+    </script>
+
+</body>
+</html>
